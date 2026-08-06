@@ -523,7 +523,7 @@
 
     async function loadCatalog() {
       try {
-        const res = await fetch('catalog.json');
+        const res = await fetch(`catalog.json?v=${Date.now()}`);
         const data = await res.json();
         catalogData = data.models || [];
         render();
@@ -531,6 +531,14 @@
         console.error('Error loading catalog.json:', err);
         grid.innerHTML = `<div style="color: #f43f5e; padding: 2rem;">Error loading catalog.json</div>`;
       }
+    }
+
+    function getThumbUrl(item) {
+      if (!item) return null;
+      let raw = (item.thumbnail || item.relative_thumbnail_path || '').replace(/^\/+/, '');
+      if (!raw) return null;
+      if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+      return `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/${raw}`;
     }
 
     function showToast(msg) {
@@ -560,8 +568,7 @@
       if (!item) return;
 
       const modelType = item.model_type || item.format || 'live2d';
-      const rawThumb = (item.relative_thumbnail_path || item.thumbnail || '').replace(/^\/+/, '');
-      const thumbUrl = rawThumb ? `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/${rawThumb}` : null;
+      const thumbUrl = getThumbUrl(item);
 
       modalTitle.textContent = item.title || 'Model Details';
 
@@ -678,8 +685,7 @@
 
       grid.innerHTML = filtered.map(m => {
         const modelType = m.model_type || m.format || 'live2d';
-        const rawThumb = (m.relative_thumbnail_path || m.thumbnail || '').replace(/^\/+/, '');
-        const thumbUrl = rawThumb ? `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/${rawThumb}` : null;
+        const thumbUrl = getThumbUrl(m);
         const containerPath = m.relative_container_path || m.file || '';
         const fileSizeMB = m.container?.file_size ? (m.container.file_size / (1024 * 1024)).toFixed(1) + ' MB' : '';
         const originSub = m.creator || m.provenance?.franchise || m.provenance?.author || m.provenance?.game || m.provenance?.source_type || 'Archive';
