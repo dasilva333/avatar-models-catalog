@@ -561,7 +561,7 @@
 
       const modelType = item.model_type || item.format || 'live2d';
       const rawThumb = item.relative_thumbnail_path || item.thumbnail || '';
-      const thumbUrl = rawThumb ? (rawThumb.startsWith('/') ? rawThumb : `/${rawThumb}`) : null;
+      const thumbUrl = rawThumb ? rawThumb.replace(/^\/+/, '') : null;
 
       modalTitle.textContent = item.title || 'Model Details';
 
@@ -679,7 +679,7 @@
       grid.innerHTML = filtered.map(m => {
         const modelType = m.model_type || m.format || 'live2d';
         const rawThumb = m.relative_thumbnail_path || m.thumbnail || '';
-        const thumbUrl = rawThumb ? (rawThumb.startsWith('/') ? rawThumb : `/${rawThumb}`) : null;
+        const thumbUrl = rawThumb ? rawThumb.replace(/^\/+/, '') : null;
         const containerPath = m.relative_container_path || m.file || '';
         const fileSizeMB = m.container?.file_size ? (m.container.file_size / (1024 * 1024)).toFixed(1) + ' MB' : '';
         const originSub = m.creator || m.provenance?.franchise || m.provenance?.author || m.provenance?.game || m.provenance?.source_type || 'Archive';
