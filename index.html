@@ -559,12 +559,15 @@
       const item = catalogData.find(m => m.id === id);
       if (!item) return;
 
+      const modelType = item.model_type || item.format || 'live2d';
+      const rawThumb = item.relative_thumbnail_path || item.thumbnail || '';
+      const thumbUrl = rawThumb ? (rawThumb.startsWith('/') ? rawThumb : `/${rawThumb}`) : null;
+
       modalTitle.textContent = item.title || 'Model Details';
-      const thumbUrl = item.relative_thumbnail_path ? `/${item.relative_thumbnail_path}` : null;
 
       modalPreview.innerHTML = thumbUrl 
         ? `<img src="${thumbUrl}" alt="${item.title}">` 
-        : `<div class="thumb-placeholder">${item.model_type.toUpperCase()}</div>`;
+        : `<div class="thumb-placeholder">${modelType.toUpperCase()}</div>`;
 
       const p = item.provenance || {};
       const info = item.model_info || {};
@@ -647,7 +650,8 @@
       const query = searchInput.value.toLowerCase().trim();
 
       const filtered = catalogData.filter(m => {
-        const matchesType = (currentFilter === 'all') || (m.model_type === currentFilter);
+        const modelType = (m.model_type || m.format || 'live2d').toLowerCase();
+        const matchesType = (currentFilter === 'all') || (modelType === currentFilter);
         const tagsStr = (m.tags || []).join(' ');
         const matchesFolder = (currentFolder === 'all') || tagsStr.includes(currentFolder) || (m.provenance?.source_collection || '').includes(currentFolder);
 
@@ -655,7 +659,7 @@
         if (!query) return true;
 
         const title = (m.title || '').toLowerCase();
-        const author = (m.provenance?.author || '').toLowerCase();
+        const author = (m.creator || m.provenance?.author || '').toLowerCase();
         const game = (m.provenance?.game || '').toLowerCase();
         const franchise = (m.provenance?.franchise || '').toLowerCase();
         const charName = (m.provenance?.character_name || '').toLowerCase();
@@ -673,17 +677,20 @@
       }
 
       grid.innerHTML = filtered.map(m => {
-        const thumbUrl = m.relative_thumbnail_path ? `/${m.relative_thumbnail_path}` : null;
+        const modelType = m.model_type || m.format || 'live2d';
+        const rawThumb = m.relative_thumbnail_path || m.thumbnail || '';
+        const thumbUrl = rawThumb ? (rawThumb.startsWith('/') ? rawThumb : `/${rawThumb}`) : null;
+        const containerPath = m.relative_container_path || m.file || '';
         const fileSizeMB = m.container?.file_size ? (m.container.file_size / (1024 * 1024)).toFixed(1) + ' MB' : '';
-        const originSub = m.provenance?.franchise || m.provenance?.author || m.provenance?.game || m.provenance?.source_type || 'Archive';
+        const originSub = m.creator || m.provenance?.franchise || m.provenance?.author || m.provenance?.game || m.provenance?.source_type || 'Archive';
 
         return `
           <div class="card" onclick="openModal('${m.id}')">
             <div class="thumb-wrapper">
               ${thumbUrl 
-                ? `<img src="${thumbUrl}" alt="${m.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${m.model_type.toUpperCase()}</div>'">` 
-                : `<div class="thumb-placeholder">${m.model_type.toUpperCase()}</div>`}
-              <span class="type-badge type-${m.model_type}">${m.model_type}</span>
+                ? `<img src="${thumbUrl}" alt="${m.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${modelType.toUpperCase()}</div>'">` 
+                : `<div class="thumb-placeholder">${modelType.toUpperCase()}</div>`}
+              <span class="type-badge type-${modelType.toLowerCase()}">${modelType}</span>
             </div>
             <div class="card-body">
               <div class="card-title" title="${m.title}">${m.title}</div>
@@ -691,7 +698,7 @@
                 <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;">${originSub}</span>
                 <span>${fileSizeMB}</span>
               </div>
-              <button class="btn-copy" onclick="copyPath('${m.relative_container_path}', this, event)">
+              <button class="btn-copy" onclick="copyPath('${containerPath}', this, event)">
                 📋 Copy Path
               </button>
             </div>
