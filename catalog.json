@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07T05:11:46.988Z",
+  "generated_at": "2026-08-07T22:59:57.306Z",
   "total_models": 17354,
   "stats": {
     "live2d": 13470,
@@ -233171,7 +233171,28 @@
       },
       "thumbnail": "962624546.jpg",
       "tags": [
-        "Live2D"
+        "1girl",
+        "Live2D",
+        "arms_behind_back",
+        "blush",
+        "brown_eyes",
+        "brown_hair",
+        "cowboy_shot",
+        "dress",
+        "frills",
+        "hat",
+        "jacket",
+        "katou_megumi",
+        "looking_at_viewer",
+        "red_jacket",
+        "ribbon",
+        "short_hair",
+        "simple_background",
+        "smile",
+        "solo",
+        "white_background",
+        "white_dress",
+        "white_headwear"
       ],
       "relative_container_path": "triage/live2d/962624546.zip",
       "relative_thumbnail_path": "triage/live2d/962624546.jpg"
