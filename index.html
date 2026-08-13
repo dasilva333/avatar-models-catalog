@@ -33,7 +33,7 @@
     }
 
     header {
-      background: rgba(15, 18, 26, 0.9);
+      background: rgba(15, 18, 26, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-color);
       padding: 1.25rem 2rem;
@@ -41,10 +41,15 @@
       top: 0;
       z-index: 100;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .header-top {
+      display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      width: 100%;
     }
 
     .brand {
@@ -75,29 +80,131 @@
       align-items: center;
       gap: 0.75rem;
       width: 100%;
-      max-width: 1200px;
     }
 
-    .search-box {
+    .combo-search-container {
       flex: 1;
-      min-width: 250px;
+      min-width: 320px;
       position: relative;
-    }
-    .search-box input {
-      width: 100%;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
+      border-radius: 10px;
+      padding: 0.35rem 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
       transition: all 0.2s;
     }
-    .search-box input:focus {
+    .combo-search-container:focus-within {
       border-color: var(--accent-vrm);
       background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+    }
+
+    .tag-chip-active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #fff;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .tag-chip-active .remove-btn {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.15s;
+    }
+    .tag-chip-active .remove-btn:hover {
+      color: #f43f5e;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .combo-input {
+      flex: 1;
+      min-width: 140px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      padding: 0.3rem 0.4rem;
+    }
+
+    .match-mode-toggle {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.2rem;
+      gap: 0.2rem;
+    }
+    .match-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.775rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .match-btn.active {
+      background: rgba(168, 85, 247, 0.3);
+      color: #fff;
+      border: 1px solid rgba(168, 85, 247, 0.5);
+    }
+
+    .autocomplete-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: rgba(15, 18, 26, 0.96);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 200;
+      display: none;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+    }
+    .autocomplete-dropdown.open { display: block; }
+    .autocomplete-item {
+      padding: 0.65rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    .autocomplete-item:hover, .autocomplete-item.selected {
+      background: rgba(168, 85, 247, 0.2);
+    }
+    .autocomplete-item .tag-count {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent-live2d);
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.725rem;
+      font-weight: 600;
     }
 
     .filter-pills {
@@ -248,117 +355,107 @@
     }
 
     .btn-copy {
-      margin-top: auto;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 0.5rem;
+      padding: 0.45rem;
       border-radius: 6px;
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       font-weight: 500;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
       transition: all 0.2s;
+      width: 100%;
+      text-align: center;
+      margin-top: auto;
     }
     .btn-copy:hover {
-      background: var(--accent-live2d);
-      color: #000;
-      border-color: var(--accent-live2d);
-      font-weight: 600;
+      background: rgba(56, 189, 248, 0.2);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #fff;
     }
     .btn-copy.copied {
-      background: var(--accent-vrma);
-      color: #000;
-      border-color: var(--accent-vrma);
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #10b981;
     }
 
-    /* Modal Overlay & Card Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(5, 7, 10, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
       z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.25s;
     }
     .modal-overlay.open {
       opacity: 1;
       pointer-events: auto;
     }
 
-    .modal-card {
-      background: #121620;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    .modal-content {
+      background: #141821;
+      border: 1px solid var(--border-color);
       border-radius: 16px;
-      width: 100%;
+      width: 90%;
       max-width: 850px;
-      max-height: 90vh;
+      max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
-      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      transform: scale(0.95);
+      transition: transform 0.25s;
+    }
+    .modal-overlay.open .modal-content {
+      transform: scale(1);
     }
 
     .modal-header {
-      padding: 1.5rem 1.75rem 1rem;
+      padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    .modal-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-    }
-    .modal-close {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
+      position: sticky;
+      top: 0;
+      background: #141821;
+      z-index: 10;
     }
-    .modal-close:hover { background: rgba(244, 63, 94, 0.6); }
+    .modal-header h2 { font-size: 1.15rem; font-weight: 700; }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #fff; }
 
     .modal-body {
-      padding: 1.75rem;
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 1.75rem;
-    }
-    @media (max-width: 700px) {
-      .modal-body { grid-template-columns: 1fr; }
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
     }
 
     .modal-preview {
-      width: 100%;
-      height: 340px;
-      background: #090b10;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
+      flex: 1;
+      min-width: 280px;
+      max-width: 360px;
+      height: 380px;
+      background: #0f1219;
+      border-radius: 12px;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--border-color);
     }
     .modal-preview img {
       width: 100%;
@@ -367,60 +464,65 @@
     }
 
     .modal-details {
+      flex: 1;
+      min-width: 280px;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
     }
 
     .detail-group {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.25rem;
     }
     .detail-label {
       font-size: 0.75rem;
-      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--accent-live2d);
+      color: var(--text-muted);
+      font-weight: 600;
     }
     .detail-value {
-      font-size: 0.925rem;
-      color: #e5e7eb;
-      word-break: break-all;
+      font-size: 0.9rem;
+      color: #fff;
     }
 
     .tag-container {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
-      max-height: 140px;
-      overflow-y: auto;
-      padding-right: 4px;
     }
     .tag-chip {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
-      padding: 0.2rem 0.55rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.2rem 0.5rem;
       border-radius: 4px;
       font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-chip:hover {
+      background: rgba(168, 85, 247, 0.2);
+      color: #fff;
+      border-color: rgba(168, 85, 247, 0.4);
     }
 
     .toast {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      background: #10b981;
-      color: #000;
+      background: rgba(16, 185, 129, 0.9);
+      color: #fff;
       padding: 0.75rem 1.25rem;
       border-radius: 8px;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 0.875rem;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       transform: translateY(100px);
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 2000;
     }
     .toast.show {
@@ -430,44 +532,40 @@
   </style>
 </head>
 <body>
+
   <header>
-    <div class="brand">
-      <h1>AVATAR MODELS CATALOG</h1>
-      <span class="badge-count" id="totalCount">0 Models</span>
+    <div class="header-top">
+      <div class="brand">
+        <h1>Avatar Models Catalog</h1>
+        <span class="badge-count" id="totalCount">Loading...</span>
+      </div>
+
+      <div class="smb-config">
+        <label for="smbPath">SMB Root Path:</label>
+        <input type="text" id="smbPath" value="\\DESKTOP-V98N0H7\Avatar Models">
+      </div>
     </div>
 
     <div class="controls-row">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search title, author, game, franchise, or booru tag...">
+      <div class="combo-search-container" id="comboSearchContainer">
+        <div id="activeTagChips" style="display: flex; flex-wrap: wrap; gap: 0.35rem;"></div>
+        <input type="text" class="combo-input" id="searchInput" placeholder="Search title, character, or type tags..." autocomplete="off">
+        
+        <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+      </div>
+
+      <div class="match-mode-toggle">
+        <button class="match-btn active" id="matchAllBtn" title="Match ALL active tags and text (AND mode)">MATCH ALL (AND)</button>
+        <button class="match-btn" id="matchAnyBtn" title="Match ANY active tag or text (OR mode)">MATCH ANY (OR)</button>
       </div>
 
       <div class="filter-pills" id="filterPills">
-        <button class="pill active" data-filter="all">All</button>
-        <button class="pill" data-filter="live2d">Live2D</button>
-        <button class="pill" data-filter="vrm">VRM</button>
-        <button class="pill" data-filter="spine">Spine</button>
-        <button class="pill" data-filter="mmd">MMD</button>
-        <button class="pill" data-filter="vrma">VRMA</button>
-      </div>
-
-      <div class="smb-config">
-        <label for="folderFilter">Source Folder:</label>
-        <select id="folderFilter" style="background: transparent; border: none; color: var(--accent-vrm); font-weight: 600; font-size: 0.825rem; outline: none; cursor: pointer;">
-          <option value="all" style="background: #0f1219; color: #fff;">All Folders</option>
-          <option value="CRAFTED" style="background: #0f1219; color: #fff;">CRAFTED</option>
-          <option value="NORMALS" style="background: #0f1219; color: #fff;">NORMALS</option>
-          <option value="funny_66" style="background: #0f1219; color: #fff;">funny_66</option>
-          <option value="funny_version" style="background: #0f1219; color: #fff;">funny_version</option>
-          <option value="batch_shinobu" style="background: #0f1219; color: #fff;">batch_shinobu</option>
-          <option value="packages_vrm" style="background: #0f1219; color: #fff;">packages_vrm</option>
-          <option value="reverse_1999" style="background: #0f1219; color: #fff;">Reverse 1999</option>
-          <option value="trickcal" style="background: #0f1219; color: #fff;">Trickcal</option>
-        </select>
-      </div>
-
-      <div class="smb-config">
-        <label for="smbPath">Copy Base Path:</label>
-        <input type="text" id="smbPath" value="E:\Avatar Models">
+        <div class="pill active" data-filter="all">All Formats</div>
+        <div class="pill" data-filter="live2d">Live2D</div>
+        <div class="pill" data-filter="vrm">VRM</div>
+        <div class="pill" data-filter="spine">Spine</div>
+        <div class="pill" data-filter="mmd">MMD</div>
+        <div class="pill" data-filter="vrma">VRMA</div>
       </div>
     </div>
   </header>
@@ -476,12 +574,11 @@
     <div class="grid" id="catalogGrid"></div>
   </main>
 
-  <!-- Rich Metadata Modal -->
   <div class="modal-overlay" id="metaModal">
-    <div class="modal-card">
+    <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title" id="modalTitle">Model Details</div>
-        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2 id="modalTitle">Model Details</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body">
         <div class="modal-preview" id="modalPreview"></div>
@@ -490,17 +587,24 @@
     </div>
   </div>
 
-  <div class="toast" id="toast">Copied path to clipboard!</div>
+  <div class="toast" id="toast">Copied to clipboard!</div>
 
   <script>
     let catalogData = [];
+    let activeTags = [];
+    let tagCountsMap = {};
+    let allUniqueTagsSorted = [];
     let currentFilter = 'all';
-    let currentFolder = 'all';
+    let matchMode = 'and';
 
     const grid = document.getElementById('catalogGrid');
     const searchInput = document.getElementById('searchInput');
+    const comboSearchContainer = document.getElementById('comboSearchContainer');
+    const activeTagChips = document.getElementById('activeTagChips');
+    const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+    const matchAllBtn = document.getElementById('matchAllBtn');
+    const matchAnyBtn = document.getElementById('matchAnyBtn');
     const filterPills = document.getElementById('filterPills');
-    const folderFilter = document.getElementById('folderFilter');
     const smbPathInput = document.getElementById('smbPath');
     const totalCountEl = document.getElementById('totalCount');
     const toast = document.getElementById('toast');
@@ -509,8 +613,17 @@
     const modalPreview = document.getElementById('modalPreview');
     const modalDetails = document.getElementById('modalDetails');
 
-    folderFilter.addEventListener('change', (e) => {
-      currentFolder = e.target.value;
+    matchAllBtn.addEventListener('click', () => {
+      matchMode = 'and';
+      matchAllBtn.classList.add('active');
+      matchAnyBtn.classList.remove('active');
+      render();
+    });
+
+    matchAnyBtn.addEventListener('click', () => {
+      matchMode = 'or';
+      matchAnyBtn.classList.add('active');
+      matchAllBtn.classList.remove('active');
       render();
     });
 
@@ -523,9 +636,16 @@
 
     async function loadCatalog() {
       try {
-        const res = await fetch(`catalog.json?v=${Date.now()}`);
+        let fetchUrl = `catalog.json?v=${Date.now()}`;
+        if (window.location.pathname.includes('/index/')) {
+          fetchUrl = `catalog.json?v=${Date.now()}`;
+        } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          fetchUrl = `index/catalog.json?v=${Date.now()}`;
+        }
+        const res = await fetch(fetchUrl);
         const data = await res.json();
         catalogData = data.models || [];
+        buildTagIndex();
         render();
       } catch (err) {
         console.error('Error loading catalog.json:', err);
@@ -533,12 +653,64 @@
       }
     }
 
+    function buildTagIndex() {
+      tagCountsMap = {};
+      for (const item of catalogData) {
+        const tags = item.tags || [];
+        for (const rawTag of tags) {
+          const t = rawTag.toLowerCase();
+          tagCountsMap[t] = (tagCountsMap[t] || 0) + 1;
+        }
+      }
+      allUniqueTagsSorted = Object.keys(tagCountsMap).sort((a, b) => tagCountsMap[b] - tagCountsMap[a]);
+    }
+
     function getThumbUrl(item) {
       if (!item) return null;
-      let raw = (item.thumbnail || item.relative_thumbnail_path || '').replace(/^\/+/, '');
+      let raw = item.relative_thumbnail_path;
+      if (!raw && item.thumbnail) {
+        const fmt = (item.model_type || item.format || 'live2d').toLowerCase();
+        raw = `triage/${fmt}/${item.thumbnail}`;
+      }
+      if (!raw && item.id) {
+        raw = `thumbnails/${item.id}.jpg`;
+      }
       if (!raw) return null;
+      raw = raw.replace(/^[/\\]+/, '');
+
+      // Ensure bare filenames like "1110496504.jpg" are prefixed with thumbnails/
+      if (!raw.includes('/') && !raw.includes('\\')) {
+        raw = `thumbnails/${raw}`;
+      }
+
       if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+
+      // When running on GitHub Pages or custom domain over HTTP/HTTPS
+      if (window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+        return `./${raw}`;
+      }
+
+      // When running on local development server
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const prefix = window.location.pathname.includes('/index/') ? '../' : '';
+        return `${prefix}${raw}`;
+      }
+
+      // Default raw GitHub CDN fallback (for file:// protocol or external embedding)
       return `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/${raw}`;
+    }
+
+    function handleThumbError(img, id, thumbName, modelType) {
+      if (!img.dataset.triedFallback) {
+        img.dataset.triedFallback = '1';
+        const file = thumbName || (id + '.jpg');
+        const fallbackUrl = window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')
+          ? `./thumbnails/${file}`
+          : `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/thumbnails/${file}`;
+        img.src = fallbackUrl;
+      } else {
+        img.parentElement.innerHTML = `<div class="thumb-placeholder">${(modelType || 'MODEL').toUpperCase()}</div>`;
+      }
     }
 
     function showToast(msg) {
@@ -563,6 +735,82 @@
       });
     }
 
+    function addActiveTag(tag) {
+      const normalized = tag.toLowerCase().trim();
+      if (!normalized) return;
+      if (!activeTags.includes(normalized)) {
+        activeTags.push(normalized);
+        renderActiveTagChips();
+        searchInput.value = '';
+        closeAutocomplete();
+        render();
+      }
+    }
+
+    function removeActiveTag(tag) {
+      activeTags = activeTags.filter(t => t !== tag);
+      renderActiveTagChips();
+      render();
+    }
+
+    function renderActiveTagChips() {
+      activeTagChips.innerHTML = activeTags.map(tag => `
+        <span class="tag-chip-active">
+          🏷️ ${tag}
+          <span class="remove-btn" onclick="removeActiveTag('${tag}')">&times;</span>
+        </span>
+      `).join('');
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value.toLowerCase().trim();
+      if (!val) {
+        closeAutocomplete();
+        render();
+        return;
+      }
+      
+      const normVal = val.replace(/_/g, ' ');
+      const matches = allUniqueTagsSorted.filter(t => {
+        const normT = t.replace(/_/g, ' ');
+        return !activeTags.includes(t) && (normT.includes(normVal) || t.includes(val));
+      }).slice(0, 15);
+
+      if (matches.length > 0) {
+        autocompleteDropdown.innerHTML = matches.map(t => `
+          <div class="autocomplete-item" onclick="addActiveTag('${t}')">
+            <span>🏷️ ${t}</span>
+            <span class="tag-count">${tagCountsMap[t]} models</span>
+          </div>
+        `).join('');
+        autocompleteDropdown.classList.add('open');
+      } else {
+        closeAutocomplete();
+      }
+      render();
+    });
+
+    function closeAutocomplete() {
+      autocompleteDropdown.classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!comboSearchContainer.contains(e.target)) {
+        closeAutocomplete();
+      }
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = searchInput.value.trim();
+        if (val) {
+          addActiveTag(val);
+        }
+      } else if (e.key === 'Backspace' && !searchInput.value && activeTags.length > 0) {
+        removeActiveTag(activeTags[activeTags.length - 1]);
+      }
+    });
+
     function openModal(id) {
       const item = catalogData.find(m => m.id === id);
       if (!item) return;
@@ -577,11 +825,8 @@
         : `<div class="thumb-placeholder">${modelType.toUpperCase()}</div>`;
 
       const p = item.provenance || {};
-      const info = item.model_info || {};
       const container = item.container || {};
       const fileSizeMB = container.file_size ? (container.file_size / (1024 * 1024)).toFixed(2) + ' MB' : 'N/A';
-
-      const visualTags = info.visual_tags || [];
       const tags = item.tags || [];
 
       modalDetails.innerHTML = `
@@ -595,41 +840,16 @@
         <div class="detail-group">
           <div class="detail-label">Provenance & Origin</div>
           <div class="detail-value">
-            ${p.franchise ? `<div><strong>Franchise:</strong> ${p.franchise}</div>` : ''}
             ${p.character_name ? `<div><strong>Character:</strong> ${p.character_name}</div>` : ''}
-            ${p.game ? `<div><strong>Game:</strong> ${p.game}</div>` : ''}
-            ${p.author ? `<div><strong>Author:</strong> ${p.author}</div>` : ''}
-            ${p.source_type ? `<div><strong>Source Type:</strong> ${p.source_type}</div>` : ''}
-            ${p.original_repo_url ? `<div><strong>Repo:</strong> <a href="${p.original_repo_url}" target="_blank" style="color: var(--accent-live2d);">${p.original_repo_url}</a></div>` : ''}
-            ${p.nizima_url ? `<div><strong>Nizima Market:</strong> <a href="${p.nizima_url}" target="_blank" style="color: var(--accent-vrm);">${p.nizima_url}</a></div>` : ''}
-            ${p.tier ? `<div><strong>Tier:</strong> ${p.tier}</div>` : ''}
-            ${p.original_subpath ? `<div><strong>Subpath:</strong> ${p.original_subpath}</div>` : ''}
+            ${p.source_type ? `<div><strong>Source:</strong> ${p.source_type}</div>` : ''}
+            ${p.original_filename ? `<div><strong>Original Folder:</strong> ${p.original_filename}</div>` : ''}
           </div>
         </div>
 
-        ${container.md5 ? `
-          <div class="detail-group">
-            <div class="detail-label">Checksum Hashes</div>
-            <div class="detail-value" style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted);">
-              MD5: ${container.md5}<br>
-              SHA256: ${container.sha256 || 'N/A'}
-            </div>
-          </div>
-        ` : ''}
-
-        ${visualTags.length > 0 ? `
-          <div class="detail-group">
-            <div class="detail-label">Visual & Booru Tags (${visualTags.length})</div>
-            <div class="tag-container">
-              ${visualTags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
-            </div>
-          </div>
-        ` : ''}
-
         <div class="detail-group">
-          <div class="detail-label">System Tags</div>
+          <div class="detail-label">Tags (${tags.length})</div>
           <div class="tag-container">
-            ${tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
+            ${tags.map(t => `<span class="tag-chip" onclick="addActiveTag('${t}'); closeModal();">${t}</span>`).join('')}
           </div>
         </div>
 
@@ -653,33 +873,41 @@
       if (e.key === 'Escape') closeModal();
     });
 
+    function itemMatchesTerm(m, term) {
+      const normTerm = term.toLowerCase().replace(/_/g, ' ');
+      const title = (m.title || '').toLowerCase().replace(/_/g, ' ');
+      const author = (m.creator || m.provenance?.author || '').toLowerCase();
+      const tagsStr = (m.tags || []).join(' ').toLowerCase().replace(/_/g, ' ');
+      const idStr = (m.id || '').toLowerCase().replace(/_/g, ' ');
+
+      return title.includes(normTerm) || tagsStr.includes(normTerm) || author.includes(normTerm) || idStr.includes(normTerm);
+    }
+
     function render() {
-      const query = searchInput.value.toLowerCase().trim();
+      const textQuery = searchInput.value.toLowerCase().trim();
+      const allTerms = [...activeTags];
+      if (textQuery) {
+        allTerms.push(textQuery);
+      }
 
       const filtered = catalogData.filter(m => {
         const modelType = (m.model_type || m.format || 'live2d').toLowerCase();
         const matchesType = (currentFilter === 'all') || (modelType === currentFilter);
-        const tagsStr = (m.tags || []).join(' ');
-        const matchesFolder = (currentFolder === 'all') || tagsStr.includes(currentFolder) || (m.provenance?.source_collection || '').includes(currentFolder);
 
-        if (!matchesType || !matchesFolder) return false;
-        if (!query) return true;
+        if (!matchesType) return false;
+        if (allTerms.length === 0) return true;
 
-        const title = (m.title || '').toLowerCase();
-        const author = (m.creator || m.provenance?.author || '').toLowerCase();
-        const game = (m.provenance?.game || '').toLowerCase();
-        const franchise = (m.provenance?.franchise || '').toLowerCase();
-        const charName = (m.provenance?.character_name || '').toLowerCase();
-        const tags = tagsStr.toLowerCase();
-        const visualTags = (m.model_info?.visual_tags || []).join(' ').toLowerCase();
-
-        return title.includes(query) || author.includes(query) || game.includes(query) || franchise.includes(query) || charName.includes(query) || tags.includes(query) || visualTags.includes(query);
+        if (matchMode === 'and') {
+          return allTerms.every(term => itemMatchesTerm(m, term));
+        } else {
+          return allTerms.some(term => itemMatchesTerm(m, term));
+        }
       });
 
       totalCountEl.textContent = `${filtered.length} Models`;
 
       if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching models found.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">No matching models found. Try adjusting active tags or switching to MATCH ANY (OR) mode.</div>`;
         return;
       }
 
@@ -688,13 +916,13 @@
         const thumbUrl = getThumbUrl(m);
         const containerPath = m.relative_container_path || m.file || '';
         const fileSizeMB = m.container?.file_size ? (m.container.file_size / (1024 * 1024)).toFixed(1) + ' MB' : '';
-        const originSub = m.creator || m.provenance?.franchise || m.provenance?.author || m.provenance?.game || m.provenance?.source_type || 'Archive';
+        const originSub = m.creator || m.provenance?.character_name || m.provenance?.source_type || 'Archive';
 
         return `
           <div class="card" onclick="openModal('${m.id}')">
             <div class="thumb-wrapper">
               ${thumbUrl 
-                ? `<img src="${thumbUrl}" alt="${m.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${modelType.toUpperCase()}</div>'">` 
+                ? `<img src="${thumbUrl}" alt="${m.title}" loading="lazy" onerror="handleThumbError(this, '${m.id}', '${m.thumbnail || ''}', '${modelType}')">` 
                 : `<div class="thumb-placeholder">${modelType.toUpperCase()}</div>`}
               <span class="type-badge type-${modelType.toLowerCase()}">${modelType}</span>
             </div>
@@ -712,8 +940,6 @@
         `;
       }).join('');
     }
-
-    searchInput.addEventListener('input', render);
 
     filterPills.addEventListener('click', (e) => {
       if (e.target.classList.contains('pill')) {
