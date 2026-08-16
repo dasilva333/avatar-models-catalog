@@ -685,18 +685,13 @@
 
       if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
 
-      // When running on GitHub Pages or custom domain over HTTP/HTTPS
-      if (window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-        return `./${raw}`;
-      }
-
       // When running on local development server
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         const prefix = window.location.pathname.includes('/index/') ? '../' : '';
         return `${prefix}${raw}`;
       }
 
-      // Default raw GitHub CDN fallback (for file:// protocol or external embedding)
+      // Live GitHub Pages & Remote: Stream directly from GitHub Raw CDN
       return `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/${raw}`;
     }
 
@@ -704,8 +699,10 @@
       if (!img.dataset.triedFallback) {
         img.dataset.triedFallback = '1';
         const file = thumbName || (id + '.jpg');
-        const fallbackUrl = window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')
-          ? `./thumbnails/${file}`
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const prefix = window.location.pathname.includes('/index/') ? '../' : '';
+        const fallbackUrl = isLocal
+          ? `${prefix}thumbnails/${file}`
           : `https://raw.githubusercontent.com/dasilva333/avatar-models-catalog/main/thumbnails/${file}`;
         img.src = fallbackUrl;
       } else {
