@@ -718,16 +718,27 @@
 
     function copyPath(relPath, btn, event) {
       if (event) event.stopPropagation();
-      const basePath = smbPathInput.value.replace(/[/\\]+$/, '');
-      const fullPath = `${basePath}\\${relPath.replace(/\//g, '\\')}`;
+      const rawBase = (smbPathInput.value || '').trim();
+      const isPosix = rawBase.startsWith('/');
+      const basePath = rawBase.replace(/[/\\]+$/, '');
+      
+      let fullPath;
+      if (isPosix) {
+        const cleanRel = (relPath || '').replace(/\\/g, '/').replace(/^\/+/, '');
+        fullPath = basePath ? `${basePath}/${cleanRel}` : `/${cleanRel}`;
+      } else {
+        const cleanRel = (relPath || '').replace(/\//g, '\\').replace(/^\\+/, '');
+        fullPath = basePath ? `${basePath}\\${cleanRel}` : cleanRel;
+      }
       
       navigator.clipboard.writeText(fullPath).then(() => {
         btn.classList.add('copied');
+        const origText = btn.innerHTML;
         btn.innerHTML = `✓ Copied!`;
         showToast(`Copied: ${fullPath}`);
         setTimeout(() => {
           btn.classList.remove('copied');
-          btn.innerHTML = `📋 Copy Path`;
+          btn.innerHTML = origText.includes('Full') ? `📋 Copy Full File Path` : `📋 Copy Path`;
         }, 1500);
       });
     }
